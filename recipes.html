@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes Home</title>
+    <style>
+        body{
+            background-image: linear-gradient(90deg, blue, blueviolet, violet);
+        }
+        input{
+            width: 700px;
+            height: 70px;
+            font-size: 50px;
+        }
+       #searchBtn{
+            width: 200px;
+            height: 50px;
+            font-size: 30px;
+            background-image: linear-gradient(270deg, red, orange);
+        }
+        #random{
+            position: relative;
+            width: 700px;
+            height: 40px;
+            font-size: 30px;
+            right: 100px;
+            top: 5px;
+            background-image: linear-gradient(90deg, red, purple);
+        }
+    </style>
+</head>
+<body align="center" topmargin="250px">
+    <input type="text" placeholder="Type A Dish Name Here..." id="user-inp" />
+        <button id="searchBtn">Search</button>
+        <br>
+        <button id="random">No Ideas Click Here For A Recommendation</button>
+    <script>
+
+function getRandomItem(arr) {
+// get random index value
+const randomIndex = Math.floor(Math.random() * arr.length);
+// get random item
+const item = arr[randomIndex];
+return item;
+}
+
+
+        document.getElementById('searchBtn').addEventListener("click", () => {
+            console.log("hi")
+            localStorage.setItem("UserInput", document.getElementById('user-inp').value);
+            console.log(localStorage.getItem('UserInput'))
+            window.location.href = "recipes2.html";
+        })
+        let randomFoods = ["Kapsalon","Wontons","Kedgeree","Burek","Koshari","Sushi","Pancakes","Kumpir","Big Mac","Ribollita"]
+        document.getElementById('random').addEventListener("click", () => {
+            console.log('hola')
+            localStorage.setItem("UserInput", getRandomItem(randomFoods));
+            window.location.href = "recipes2.html";
+        })
+    </script>
+    
+</body>
+</html>

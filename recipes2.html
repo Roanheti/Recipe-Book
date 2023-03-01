@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes</title>
+    <style>
+        body{
+            background-image: repeating-linear-gradient(45deg, purple, yellow, blue);
+            color: black;
+        }
+        #Recipe{
+            position: relative;
+            top: -65px;
+        }
+        ul{
+            list-style: none;
+            font-size: 25px;
+            font-weight: bolder;
+        }
+        p{
+            font-size: 25px;
+            font-weight: bolder;
+        }
+        h1{
+            font-size: 400%;
+        }
+        input{
+            font-size: 15px;
+            position: absolute;
+            right: 100px;
+            top: 70px;
+        }
+        #searchBtn{
+            font-size: 15px;
+            position: absolute;
+            right: 35px;
+            top: 70px;
+            background-image: linear-gradient(270deg, red, orange);
+        }
+        #homeBtn{
+            font-size: 15px;
+            position: absolute;
+            left: 40px;
+            top: 70px;
+            background-image: linear-gradient(90deg, lightblue, violet);
+        }
+   </style>
+</head>
+<body onload="recipes()" align="center">
+    <div id="Recipe">
+    <button id="homeBtn"><a href="recipes.html">Recipe Home</a></button>
+    <input type="text" placeholder="Type A Dish Name Here..." id="user-inp"/>
+    <button id="searchBtn">Search</button>
+    <br> 
+    <h1 id="foodName">Unavailable</h1>
+    
+    <img id="pic" width="40%">
+        <ul id="parent"></ul>
+    <p id="Instruct"></p>
+</div>
+    <script>
+        document.getElementById('searchBtn').addEventListener("click", () => {
+        console.log("hi")
+        localStorage.clear();
+        localStorage.setItem("UserInput", document.getElementById('user-inp').value);
+        console.log(localStorage.getItem('UserInput'))
+        window.location.href = "recipes2.html";
+        })
+        let food = localStorage.getItem('UserInput');
+        let link = `https://www.themealdb.com/api/json/v1/1/search.php?s=${food}`
+        function recipes(){
+        fetch(link)
+        .then(data=>{
+            return data.json();
+        }).then((completedata)=>{
+            let meal = completedata.meals[0]
+            console.log(meal)
+            document.getElementById("foodName").innerHTML = meal.strMeal;
+            document.getElementById('pic').src= meal.strMealThumb;
+            let count = 1;
+            let ingredients = [];
+            for (let i in meal) {
+            let ingredient = "";
+            let measure = "";
+            if (i.startsWith("strIngredient") && meal[i]) {
+            ingredient = meal[i];
+            measure = meal[`strMeasure` + count];
+            count += 1;
+            ingredients.push(`${measure} ${ingredient}`);
+          }
+        }
+        console.log(ingredients);
+        ingredients.forEach((i) => {
+          let child = document.createElement("li");
+          child.innerText = i;
+          document.getElementById('parent').appendChild(child);
+        });
+        document.getElementById('Instruct').innerHTML = meal.strInstructions
+
+        })
+        
+    }
+    </script>
+    
+</body>
+</html>
